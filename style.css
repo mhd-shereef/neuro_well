@@ -432,6 +432,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 input[type="number"] {
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 
@@ -790,9 +791,11 @@ input[type="number"] {
     display: flex;
     flex-direction: column;
     padding: 0;
-    height: calc(100vh - var(--nav-h) - 6rem);
-    min-height: 420px;
-    max-height: 700px;
+    height: calc(100vh - var(--nav-h) - 4rem);
+    min-height: 500px;
+    max-height: 850px;
+    width: 100%;
+    margin: 0 auto;
     overflow: hidden;
 
     /* Glass inherits from .card */

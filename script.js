@@ -50,6 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.forEach(link => link.classList.toggle('active', link.dataset.section === sectionId));
         mobileLinks.forEach(link => link.classList.toggle('active', link.dataset.section === sectionId));
         closeMobileMenu();
+
+        // Floating button visibility: Only show when NOT in chat
+        if (floatingChatBtn) {
+            floatingChatBtn.classList.toggle('hidden', sectionId === 'chat');
+        }
+
         if (sectionId === 'chat') setTimeout(() => chatInput.focus(), 150);
     }
 
@@ -366,11 +372,14 @@ Your rules:
        ════════════════════════════════════════════ */
 
     const topicSets = [
-        ['💪 Best exercises for beginners', '🥗 How to eat healthier', '💤 Tips for better sleep'],
-        ['🧘 How to reduce stress', '💧 How much water should I drink', '🏃 Benefits of daily walking'],
-        ['🍎 Best foods for energy', '🧠 How to improve focus', '❤️ Heart-healthy habits'],
-        ['🥑 Healthy snack ideas', '📉 How to lower blood pressure', '🦴 Ways to strengthen bones'],
-        ['🫁 Breathing exercises', '🏋️ Home workout routine', '😴 How to fix sleep schedule']
+        ['💪 Best exercises for beginners', '🥗 How to eat healthier'],
+        ['💤 Tips for better sleep', '🧘 How to reduce stress'],
+        ['💧 How much water to drink', '🏃 Benefits of daily walking'],
+        ['🍎 Best foods for energy', '🧠 How to improve focus'],
+        ['❤️ Heart-healthy habits', '🥑 Healthy snack ideas'],
+        ['📉 How to lower BP', '🦴 Ways to strengthen bones'],
+        ['🫁 Breathing exercises', '🏋️ Home workout routine'],
+        ['😴 Fix sleep schedule', '🚶 Daily step goals']
     ];
 
     let currentTopicSet = 0;
@@ -410,8 +419,8 @@ Your rules:
         addMessage(reply, 'bot');
         chatInput.disabled = false;
 
-        // If all 3 used, load next set
-        if (usedCount >= 3) {
+        // If all 2 used, load next set
+        if (usedCount >= 2) {
             currentTopicSet++;
             setTimeout(() => loadTopicChips(), 300);
         }
