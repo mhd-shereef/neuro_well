@@ -346,7 +346,23 @@ Your rules:
 
 
     /* ════════════════════════════════════════════
-       7. QUICK TOPIC CHIPS
+       7. FLOATING BUTTON & MOBILE NAV CHAT
+       ════════════════════════════════════════════ */
+
+    const floatingChatBtn = document.getElementById('floating-chat-btn');
+    const mobileNavChat = document.getElementById('mobile-nav-chat');
+
+    if (floatingChatBtn) {
+        floatingChatBtn.addEventListener('click', () => switchSection('chat'));
+    }
+
+    if (mobileNavChat) {
+        mobileNavChat.addEventListener('click', () => switchSection('chat'));
+    }
+
+
+    /* ════════════════════════════════════════════
+       8. QUICK TOPIC CHIPS
        ════════════════════════════════════════════ */
 
     const topicSets = [
