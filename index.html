@@ -1,23 +1,312 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="Neurowell – A smart BMI calculator with diet plans, shopping suggestions, and motivational insights." />
-  <title>Neurowell – Smart BMI & Wellness</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    content="Neurowell — A simple, trustworthy healthcare utility with a BMI Calculator and Neuro AI health chatbot.">
+  <title>Neurowell | Healthcare Utility</title>
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet" />
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 
+
 <body>
-  <div id="root"></div>
-  <script type="module" src="./src/main.tsx"></script>
+
+  <!-- ════════════ NAVIGATION ════════════ -->
+  <header class="site-header" id="site-header">
+    <div class="nav-inner">
+      <!-- Brand -->
+      <a href="#" class="brand">
+        <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        </svg>
+        <span>Neurowell</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <button class="nav-link active" id="nav-bmi" data-section="bmi">BMI Calculator</button>
+        <button class="nav-link" id="nav-chat" data-section="chat">Neuro AI</button>
+      </nav>
+
+      <!-- Mobile Hamburger -->
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Nav Dropdown -->
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+      <button class="mobile-link active" data-section="bmi">BMI Calculator</button>
+      <button class="mobile-link" data-section="chat">Neuro AI</button>
+    </nav>
+  </header>
+
+
+  <!-- ════════════ MAIN CONTENT ════════════ -->
+  <main class="main-content container py-4">
+
+
+    <!-- ──────── BMI CALCULATOR + MEAL PLAN ──────── -->
+    <section id="section-bmi" class="app-section active">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+
+          <!-- BMI Form Card -->
+          <div class="card mb-4 shadow-sm border-0">
+            <div class="card-header bg-transparent border-0 pb-0">
+              <h1 class="h2 mb-2">BMI Calculator</h1>
+              <p class="text-muted">Enter your details to calculate BMI, daily calories, and get a personalized meal
+                plan.</p>
+            </div>
+
+            <div class="card-body">
+              <form id="bmi-form" novalidate>
+                <div class="row g-3 mb-4">
+                  <div class="col-md-6">
+                    <label for="age-input" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="age-input" placeholder="e.g. 25" min="1" max="120"
+                      required>
+                    <div class="error-text text-danger small mt-1" id="age-error" role="alert"></div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="gender-select" class="form-label">Gender</label>
+                    <select id="gender-select" class="form-select" required>
+                      <option value="" disabled selected>Select</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                    <div class="error-text text-danger small mt-1" id="gender-error" role="alert"></div>
+                  </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                  <div class="col-md-6">
+                    <label for="height-input" class="form-label">Height (cm)</label>
+                    <input type="number" class="form-control" id="height-input" placeholder="e.g. 175" min="1" required>
+                    <div class="error-text text-danger small mt-1" id="height-error" role="alert"></div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="weight-input" class="form-label">Weight (kg)</label>
+                    <input type="number" class="form-control" id="weight-input" placeholder="e.g. 70" min="1" required>
+                    <div class="error-text text-danger small mt-1" id="weight-error" role="alert"></div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" id="calc-btn">Calculate BMI</button>
+              </form>
+
+              <!-- BMI + Calories Result -->
+              <div id="bmi-result" class="result-box hidden mt-4" aria-live="polite">
+                <div class="row g-3">
+                  <div class="col-sm-6 text-center">
+                    <div class="result-item p-3 border rounded shadow-sm">
+                      <div class="result-label fw-medium text-muted small uppercase">Your BMI</div>
+                      <div class="result-value h3 mb-1" id="bmi-value">--</div>
+                      <div class="result-category fw-bold badge bg-primary" id="bmi-category">--</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 text-center">
+                    <div class="result-item p-3 border rounded shadow-sm">
+                      <div class="result-label fw-medium text-muted small uppercase">Daily Calories</div>
+                      <div class="result-value cal-value h3 mb-1" id="cal-value">--</div>
+                      <div class="result-category text-muted small" id="cal-label">kcal/day (maintenance)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Meal Plan Card (appears after calculation) -->
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+          <div id="meal-plan-card" class="card meal-plan-card hidden border-0 shadow-sm">
+            <div class="card-body">
+              <div class="meal-header d-flex justify-content-between align-items-start mb-4">
+                <div>
+                  <h2 class="h3 mb-1">🍽️ Your Meal Plan</h2>
+                  <p class="meal-subtitle text-muted mb-0">Based on your profile &bull; <span
+                      id="meal-cal-target">--</span> kcal/day</p>
+                </div>
+                <button class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2 px-3 fw-bold"
+                  id="refresh-meals-btn" title="Get new meal suggestions">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10" />
+                    <polyline points="1 20 1 14 7 14" />
+                    <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+                  </svg>
+                  Refresh
+                </button>
+              </div>
+
+              <!-- Meals list -->
+              <div id="meals-list" class="meals-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Questionnaire POPUP (modal overlay — select only, no typing) -->
+      <div id="questionnaire-overlay" class="q-overlay hidden">
+        <div class="q-modal card">
+          <div class="q-modal-header">
+            <h2>🎯 Personalize Your Meals</h2>
+            <p>Tell us your goals for AI-powered meal suggestions.</p>
+          </div>
+
+          <form id="questionnaire-form" novalidate>
+            <div class="form-group">
+              <label for="q-goal">What's your health goal?</label>
+              <select id="q-goal" required>
+                <option value="" disabled selected>Select a goal</option>
+                <option value="lose-weight">Lose Weight</option>
+                <option value="gain-muscle">Gain Muscle</option>
+                <option value="maintain">Maintain Current Weight</option>
+                <option value="eat-healthier">Eat Healthier Overall</option>
+                <option value="more-energy">Have More Energy</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="q-diet">Dietary preference?</label>
+              <select id="q-diet">
+                <option value="none">No Preference</option>
+                <option value="vegetarian">Vegetarian</option>
+                <option value="vegan">Vegan</option>
+                <option value="keto">Keto / Low-Carb</option>
+                <option value="high-protein">High Protein</option>
+                <option value="mediterranean">Mediterranean</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="q-avoid">Foods to avoid?</label>
+              <select id="q-avoid">
+                <option value="none">None</option>
+                <option value="nuts">Nuts</option>
+                <option value="dairy">Dairy</option>
+                <option value="gluten">Gluten</option>
+                <option value="seafood">Seafood</option>
+                <option value="eggs">Eggs</option>
+                <option value="soy">Soy</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="q-cuisine">Preferred cuisine?</label>
+              <select id="q-cuisine">
+                <option value="any">Any</option>
+                <option value="indian">Indian</option>
+                <option value="mediterranean">Mediterranean</option>
+                <option value="asian">Asian</option>
+                <option value="american">American</option>
+                <option value="mexican">Mexican</option>
+                <option value="middle-eastern">Middle Eastern</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Generate My Plan ✨</button>
+          </form>
+        </div>
+      </div>
+
+    </section>
+
+
+
+
+    <!-- ──────── NEURO AI CHATBOT ──────── -->
+    <section id="section-chat" class="app-section">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+          <div class="card chat-card border-0 shadow-lg overflow-hidden">
+            <!-- Chat Header -->
+            <div class="chat-top bg-primary text-white p-3 d-flex align-items-center">
+              <div class="chat-title d-flex align-items-center gap-2">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+                <h1 class="h4 mb-0 fw-bold">Neuro AI</h1>
+              </div>
+            </div>
+            <div class="p-3 border-bottom bg-light">
+              <p class="chat-subtitle text-muted small mb-0">Ask about wellness, nutrition, exercise, sleep, or BMI.</p>
+            </div>
+
+            <div class="card-body p-0 d-flex flex-column" style="height: 500px;">
+              <!-- Messages -->
+              <div class="chat-messages p-3 flex-grow-1 overflow-auto" id="chat-messages"
+                style="background: rgba(var(--color-primary-rgb), 0.02);">
+                <div class="msg msg-bot">
+                  <div class="msg-bubble shadow-sm p-3 rounded-4">Hello! I'm <strong>Neuro AI</strong>, your health
+                    assistant. How can I help you today? 😊</div>
+                </div>
+              </div>
+
+
+              <!-- Disclaimer -->
+              <div class="chat-disclaimer px-3 py-2 text-muted x-small border-top bg-white">
+                <i class="bi bi-info-circle me-1"></i> Neuro AI provides health information and is not a substitute for
+                professional medical advice.
+              </div>
+
+              <!-- Quick topic suggestions -->
+              <div id="topic-chips" class="topic-chips border-top bg-white py-2">
+                <p class="chips-label px-3 mb-2 fw-medium text-muted small">Quick topics:</p>
+                <div class="chips-row px-3 d-flex flex-wrap gap-2" id="chips-row"></div>
+              </div>
+
+              <!-- Input -->
+              <div class="p-3 border-top bg-white">
+                <form class="chat-input" id="chat-form">
+                  <div class="input-group">
+                    <input type="text" id="chat-input-field"
+                      class="form-control rounded-pill-start border-end-0 py-2 ps-4" placeholder="Ask me anything..."
+                      autocomplete="off" required>
+                    <button type="submit" class="btn btn-primary rounded-pill-end px-4" aria-label="Send message">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13" />
+                        <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                      </svg>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </section>
+
+  </main>
+
+
+  <!-- ════════════ FOOTER ════════════ -->
+  <footer class="site-footer bg-white border-top py-4 mt-auto">
+    <div class="container text-center">
+      <p class="text-muted mb-0 small">&copy; 2026 Neurowell©. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <script src="script.js"></script>
 </body>
 
 </html>
